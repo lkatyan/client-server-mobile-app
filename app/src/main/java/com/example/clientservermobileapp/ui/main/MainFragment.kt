@@ -46,17 +46,17 @@ class MainFragment : Fragment() {
             )
         }
 
-        viewModel.newsLiveData.observe(viewLifecycleOwner) { responce ->
-            when(responce) {
+        viewModel.newsLiveData.observe(viewLifecycleOwner) { res ->
+            when(res) {
                 is Resource.Success -> {
                     progress_bar.visibility = View.INVISIBLE
-                    responce.data?.let {
+                    res.data?.let {
                         newsAdapter.differ.submitList(it.articles)
                     }
                 }
                 is Resource.Error -> {
                     progress_bar.visibility = View.INVISIBLE
-                    responce.data?.let {
+                    res.data?.let {
                         Log.e("checkData", "MainFragment: error: ${it}")
                     }
                 }

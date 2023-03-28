@@ -1,5 +1,6 @@
-package com.example.clientservermobileapp.ui.details
+package com.example.clientservermobileapp.ui.favourite
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.clientservermobileapp.data.api.NewsRepository
@@ -10,20 +11,17 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailsViewModel @Inject constructor(private val repository: NewsRepository): ViewModel() {
+class FavouriteViewModel @Inject constructor(private val repository: NewsRepository): ViewModel() {
+
+    val favLiveData: MutableLiveData<List<Article>> = MutableLiveData()
 
     init {
-        getSavedArticles()
+        getFavouriteNews()
     }
 
-    fun getSavedArticles() =
+    private fun getFavouriteNews() =
         viewModelScope.launch(Dispatchers.IO) {
             val res = repository.getFavouriteArticles()
-            println("DB size: ${res.size}")
-            repository.getFavouriteArticles()
+            favLiveData.postValue(res)
         }
-
-    fun saveFavouriteArticle(article: Article) = viewModelScope.launch(Dispatchers.IO) {
-        repository.addToFavourite(article = article)
-    }
 }
