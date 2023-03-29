@@ -10,11 +10,16 @@ import android.view.ViewGroup
 import android.webkit.URLUtil
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.example.clientservermobileapp.R
 import com.example.clientservermobileapp.databinding.FragmentDetailsBinding
+import com.example.clientservermobileapp.ui.favourite.FavouriteFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_main.*
 import java.lang.Exception
 
 @AndroidEntryPoint
@@ -22,6 +27,7 @@ class DetailsFragment : Fragment() {
 
     private var _binding: FragmentDetailsBinding? = null
     private val mBinding get() = _binding!!
+
     private val bundleArgs: DetailsFragmentArgs by navArgs()
     private val viewModel by viewModels<DetailsViewModel>()
 
@@ -66,6 +72,15 @@ class DetailsFragment : Fragment() {
 
             mBinding.iconFavourite.setOnClickListener {
                 viewModel.saveFavouriteArticle(article)
+            }
+
+            mBinding.iconBack.setOnClickListener {
+                this.activity?.onBackPressed()
+            }
+
+            mBinding.iconShare.setOnClickListener {
+                viewModel.deleteFavouriteArticle(article)
+                this.activity?.onBackPressed()
             }
         }
     }
